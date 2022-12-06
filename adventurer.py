@@ -1,4 +1,5 @@
 import random
+from potion import HealingPotion
 
 
 class Adventurer:
@@ -9,14 +10,12 @@ class Adventurer:
         health = random.randint(75, 100)
 
         self._name = name
-        self._health = {
-            "current": health,
-            "max": health
-        }
-        self._potions = {
-            "healing": 2,
-            "vision": 2,
-        }
+        self._health = self._health_max = health
+        self._healing_potions = [
+            HealingPotion(),
+            HealingPotion()
+        ]
+        self._vision_potions = 2,
         self._pillars = {
             "abstraction": 0,
             "encapsulation": 0,
@@ -24,26 +23,48 @@ class Adventurer:
             "polymorphism": 0,
         }
 
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def healing_potions(self):
+        potion_details = ""
+        for healing_potion in self._healing_potions:
+            potion_details += str(healing_potion.strength) + "\n"
+        return potion_details
+
     def update_health(self, strength, is_damage=False):
         """This method updates the current HP of the Adventurer."""
         if is_damage:
-            self._health['current'] -= strength
+            self._health -= strength
         else:
-            self._health['current'] += strength
+            self._health += strength
 
     def __str__(self):
         """This method returns a string representation of the Adventurer."""
-        return self._name
+        details = ""
+        details += self._name + "\n"
+        details += self.healing_potions
+        return details
 
-    def use_potion(self, potion_type):
-        if potion_type == "healing":
-            self._potions['healing'] -= 1
-        elif potion_type == "vision":
-            self._potions['vision'] -= 1
-        else:
-            raise Exception("Invalid potion type")
+    def use_vision_potion(self):
+        self._vision_potions -= 1
 
+    def use_healing_potion(self):
+        print(f"old health: {self._health}")
+        if len(self._healing_potions) > 0:
+            potion = self._healing_potions.pop()
+            self.update_health(potion.strength)
+        print(self.healing_potions)
+        print(f"new health: {self._health}")
+        
 
 # test
-player = Adventurer("Mel")
-print(player)
+player1 = Adventurer("Mel")
+print(player1)
+player2 = Adventurer("Mel2")
+print(player2)
+
+player1.use_healing_potion()
+print(player1)
