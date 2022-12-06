@@ -67,7 +67,12 @@ class Adventurer:
 
     def use_vision_potion(self):
         """This method decrements inventory value of Vision Potions"""
-        self._vision_potions -= 1
+        if self._vision_potions > 0:
+            self._vision_potions -= 1
+            return True
+        else: 
+            print("Sorry, no vision potions available!")
+            return False
 
     def add_healing_potion(self):
         """This method adds a Healing Potion object to the inventory."""
