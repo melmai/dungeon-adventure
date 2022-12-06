@@ -28,10 +28,14 @@ class Adventurer:
         return self._name
 
     @property
+    def health(self):
+        return self._health
+
+    @property
     def healing_potions(self):
-        potion_details = ""
+        potion_details = "Healing Potions: "
         for healing_potion in self._healing_potions:
-            potion_details += str(healing_potion.strength) + "\n"
+            potion_details += f"[{str(healing_potion)}]"
         return potion_details
 
     def update_health(self, strength, is_damage=False):
@@ -52,19 +56,21 @@ class Adventurer:
         self._vision_potions -= 1
 
     def use_healing_potion(self):
+        """This method updates the HP of the Adventurer, up to max HP."""
         print(f"old health: {self._health}")
         if len(self._healing_potions) > 0:
             potion = self._healing_potions.pop()
             self.update_health(potion.strength)
         print(self.healing_potions)
         print(f"new health: {self._health}")
-        
+
 
 # test
 player1 = Adventurer("Mel")
 print(player1)
+print()
 player2 = Adventurer("Mel2")
 print(player2)
-
+print()
 player1.use_healing_potion()
 print(player1)
