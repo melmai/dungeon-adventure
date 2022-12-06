@@ -15,7 +15,7 @@ class Adventurer:
             HealingPotion(),
             HealingPotion()
         ]
-        self._vision_potions = 2,
+        self._vision_potions = 2
         self._pillars = {
             "abstraction": 0,
             "encapsulation": 0,
@@ -58,6 +58,7 @@ class Adventurer:
         details = ""
         details += self._name + "\n"
         details += self.healing_potions + "\n"
+        details += f"Vision Potions: {self._vision_potions}\n"
         details += f"{self.health}/{self._health_max}"
         return details
 
