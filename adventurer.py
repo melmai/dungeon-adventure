@@ -61,8 +61,17 @@ class Adventurer:
         details += f"{self.health}/{self._health_max}"
         return details
 
+    def add_vision_potion(self):
+        """This method increments inventory value of Vision Potions"""
+        self._vision_potions += 1
+
     def use_vision_potion(self):
+        """This method decrements inventory value of Vision Potions"""
         self._vision_potions -= 1
+
+    def add_healing_potion(self):
+        """This method adds a Healing Potion object to the inventory."""
+        self._healing_potions.append(HealingPotion())
 
     def use_healing_potion(self):
         """This method updates the HP of the Adventurer, up to max HP."""
@@ -109,5 +118,11 @@ print()
 # try healing again
 print("Ok now lets heal it up")
 player1.use_healing_potion()
+print(player1)
+print()
+
+# simulate finding healing potion
+print("YAY found a healing potion!")
+player1.add_healing_potion()
 print(player1)
 
