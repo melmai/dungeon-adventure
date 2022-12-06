@@ -31,6 +31,10 @@ class Adventurer:
     def health(self):
         return self._health
 
+    @health.setter
+    def health(self, hp):
+        self._health = hp
+
     @property
     def healing_potions(self):
         potion_details = "Healing Potions: "
@@ -57,12 +61,24 @@ class Adventurer:
 
     def use_healing_potion(self):
         """This method updates the HP of the Adventurer, up to max HP."""
-        print(f"old health: {self._health}")
+
+        # don't use a potion if already at full strength
+        if self.health >= self._health_max:
+            print("Already at full strength!")
+            return
+
+        # check to see that there are potions available
         if len(self._healing_potions) > 0:
             potion = self._healing_potions.pop()
             self.update_health(potion.strength)
-        print(self.healing_potions)
-        print(f"new health: {self._health}")
+
+            # make sure current HP does not exceed max HP
+            if self.health > self._health_max: 
+                self.health = self._health_max
+
+        # if not, let the user know
+        else:
+            print("Sorry, no health potions available!")
 
 
 # test
