@@ -35,6 +35,14 @@ class Adventurer:
         """This method returns a string representation of the Adventurer."""
         return self._name
 
+    def use_potion(self, potion_type):
+        if potion_type == "healing":
+            self._potions['healing'] -= 1
+        elif potion_type == "vision":
+            self._potions['vision'] -= 1
+        else:
+            raise Exception("Invalid potion type")
+
 
 # test
 player = Adventurer("Mel")
