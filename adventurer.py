@@ -124,5 +124,6 @@ class Adventurer:
             raise Exception("That's not a pillar...")
     
     def mission_complete(self):
+        """This method checks to see if all pillars are found and returns a boolean."""
         return self._pillars["abstraction"] and self._pillars["encapsulation"] \
             and self._pillars["inheritance"] and self._pillars["polymorphism"]
