@@ -100,6 +100,18 @@ class Adventurer:
         else:
             print("Sorry, no health potions available!")
 
+    def add_pillar(self, pillar):
+        """This method adds a pillar to the inventory."""
+        if pillar == "abstraction":
+            self._pillars["abstraction"] += 1
+        elif pillar == "encapsulation":
+            self._pillars["encapsulation"] += 1
+        elif pillar == "inheritance":
+            self._pillars["inheritance"] += 1
+        elif pillar == "polymorphism":
+            self._pillars["polymorphism"] += 1
+        else:
+            raise Exception("That's not a pillar...")
 
 # create test players
 player1 = Adventurer("Mel")
