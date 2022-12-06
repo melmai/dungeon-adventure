@@ -55,12 +55,9 @@ class Adventurer:
             pillars += f"{pillar.capitalize()}: {result}/1\n"
         return pillars    
         
-    def update_health(self, strength, is_damage=False):
-        """This method updates the current HP of the Adventurer."""
-        if is_damage:
-            self._health -= strength
-        else:
-            self._health += strength
+    def take_damage(self, strength):
+        """This method updates the current HP of the Adventurer after taking damage."""
+        self._health -= strength
 
     def __str__(self):
         """This method returns a string representation of the Adventurer."""
@@ -85,9 +82,12 @@ class Adventurer:
             print("Sorry, no vision potions available!")
             return False
 
-    def add_healing_potion(self):
+    def add_healing_potion(self, healing_potion=None):
         """This method adds a Healing Potion object to the inventory."""
-        self._healing_potions.append(HealingPotion())
+        if healing_potion is not None:
+            self._healing_potions.append(healing_potion)
+        else:
+            self._healing_potions.append(HealingPotion())
 
     def use_healing_potion(self):
         """This method updates the HP of the Adventurer, up to max HP."""
