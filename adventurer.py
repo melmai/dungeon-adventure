@@ -25,18 +25,22 @@ class Adventurer:
 
     @property
     def name(self):
+        """This method returns the Adventurer's name."""
         return self._name
 
     @property
     def health(self):
+        """This method gets the current HP value of the Adventurer."""
         return self._health
 
     @health.setter
     def health(self, hp):
+        """This method sets the HP value of the Adventurer."""
         self._health = hp
 
     @property
     def healing_potions(self):
+        """This method gets the current healing potions in the inventory."""
         potion_details = "Healing Potions: "
         for healing_potion in self._healing_potions:
             potion_details += f"[{str(healing_potion)}]"
@@ -53,7 +57,8 @@ class Adventurer:
         """This method returns a string representation of the Adventurer."""
         details = ""
         details += self._name + "\n"
-        details += self.healing_potions
+        details += self.healing_potions + "\n"
+        details += f"{self.health}/{self._health_max}"
         return details
 
     def use_vision_potion(self):
@@ -81,12 +86,28 @@ class Adventurer:
             print("Sorry, no health potions available!")
 
 
-# test
+# create test players
 player1 = Adventurer("Mel")
 print(player1)
 print()
 player2 = Adventurer("Mel2")
 print(player2)
 print()
+
+# test healing potion use
+print("Trying out a health potion!")
 player1.use_healing_potion()
 print(player1)
+print()
+
+# test damage
+print("Ouch that hurts.")
+player1.update_health(10, True)
+print(player1)
+print()
+
+# try healing again
+print("Ok now lets heal it up")
+player1.use_healing_potion()
+print(player1)
+
