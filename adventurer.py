@@ -17,10 +17,10 @@ class Adventurer:
         ]
         self._vision_potions = 2
         self._pillars = {
-            "abstraction": 0,
-            "encapsulation": 0,
-            "inheritance": 0,
-            "polymorphism": 0,
+            "abstraction": False,
+            "encapsulation": False,
+            "inheritance": False,
+            "polymorphism": False,
         }
 
     @property
@@ -46,6 +46,15 @@ class Adventurer:
             potion_details += f"[{str(healing_potion)}]"
         return potion_details
 
+    @property
+    def pillars(self):
+        """This method gets the current pillars in the inventory."""
+        pillars = "Pillars: "
+        for pillar, status in self._pillars.items():
+            result = 1 if status else 0
+            pillars += f"{pillar.capitalize()}: {result}/1\n"
+        return pillars    
+        
     def update_health(self, strength, is_damage=False):
         """This method updates the current HP of the Adventurer."""
         if is_damage:
@@ -57,9 +66,10 @@ class Adventurer:
         """This method returns a string representation of the Adventurer."""
         details = ""
         details += self._name + "\n"
+        details += f"{self.health}/{self._health_max}\n\n"
         details += self.healing_potions + "\n"
-        details += f"Vision Potions: {self._vision_potions}\n"
-        details += f"{self.health}/{self._health_max}"
+        details += f"Vision Potions: {self._vision_potions}\n\n"
+        details += self.pillars
         return details
 
     def add_vision_potion(self):
@@ -100,35 +110,19 @@ class Adventurer:
         else:
             print("Sorry, no health potions available!")
 
-
-# create test players
-player1 = Adventurer("Mel")
-print(player1)
-print()
-player2 = Adventurer("Mel2")
-print(player2)
-print()
-
-# test healing potion use
-print("Trying out a health potion!")
-player1.use_healing_potion()
-print(player1)
-print()
-
-# test damage
-print("Ouch that hurts.")
-player1.update_health(10, True)
-print(player1)
-print()
-
-# try healing again
-print("Ok now lets heal it up")
-player1.use_healing_potion()
-print(player1)
-print()
-
-# simulate finding healing potion
-print("YAY found a healing potion!")
-player1.add_healing_potion()
-print(player1)
-
+    def add_pillar(self, pillar):
+        """This method adds a pillar to the inventory."""
+        if pillar == "abstraction":
+            self._pillars["abstraction"] = True
+        elif pillar == "encapsulation":
+            self._pillars["encapsulation"] = True
+        elif pillar == "inheritance":
+            self._pillars["inheritance"] = True
+        elif pillar == "polymorphism":
+            self._pillars["polymorphism"] = True
+        else:
+            raise Exception("That's not a pillar...")
+    
+    def mission_complete(self):
+        return self._pillars["abstraction"] and self._pillars["encapsulation"] \
+            and self._pillars["inheritance"] and self._pillars["polymorphism"]
