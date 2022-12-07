@@ -15,13 +15,8 @@ class Dungeon:
             for j in range(cols):
                 self.rooms[-1].append(Room(i, j))
 
-    def print(self):
-        for row in range(self.rows):
-            for col in range(self.cols):
-                print(self.rooms[row][col], sep=' ', end="")
-            print()
-
     def draw(self):
+        """Draws the entire Dungeon"""
         for row in range(self.rows):
             for col in range(self.cols):
                 self.rooms[row][col].draw_top()
@@ -34,6 +29,7 @@ class Dungeon:
             print()
 
     def get_neighbors(self, current, visited):
+        """When generating dungeon this method checks for neighboring rooms"""
         neighbors = []
         if current.row > 0 and not self.rooms[current.row - 1][current.col] in visited:  # check if we can go north
             neighbors.append(self.rooms[current.row - 1][current.col])
@@ -46,6 +42,7 @@ class Dungeon:
         return neighbors
 
     def create_doors(self, current, neighbor):
+        """Creates a doorway between rooms when generating dungeon"""
         if neighbor.col - current.col > 0:
             current.east = True
             neighbor.west = True
@@ -60,6 +57,7 @@ class Dungeon:
             neighbor.south = True
 
     def generate(self):
+        """Primary method to construct the dungeon"""
         source = self.rooms[self.entrance_row][self.entrance_col]
         stack = []
         visited = []
@@ -77,6 +75,7 @@ class Dungeon:
                 stack.pop()
     
     def fill_rooms(self):
+        """From the generated maze places entrance, exit, pillars, and items"""
         self.rooms[self.entrance_row][self.entrance_col].entrance = True
         choices = []
         for row in range(self.rows):
@@ -107,4 +106,115 @@ class Dungeon:
                         self.rooms[choice[0]][choice[1]].vision_potion = True
                     elif item == "Pit":
                         self.rooms[choice[0]][choice[1]].pit = True
-   
+    
+    def vision_potion(self):
+        """When player uses a vision potion this method will display the player room and all surrounding rooms."""
+        player_location = [self.entrance_row, self.entrance_col] #place holder until it can access player location from adventurer class
+        vision_rooms_row = player_location[0]
+        vision_rooms_col = player_location[1]
+        #case if player can see all 8 rooms
+        if (vision_rooms_row > 0 and vision_rooms_row < self.rows - 1) and (vision_rooms_col > 0 and vision_rooms_col < self.cols - 1):
+            for row in range(vision_rooms_row - 1, vision_rooms_row + 2):
+                for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                    self.rooms[row][col].draw_top()
+                print()
+                for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                    self.rooms[row][col].draw_middle()
+                print()
+                for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                    self.rooms[row][col].draw_bottom()
+                print()
+        #cases if player on edge or corner
+        elif (vision_rooms_row == 0 or vision_rooms_row == self.rows - 1) or (vision_rooms_col == 0 or vision_rooms_col == self.cols - 1):
+            #dungeon corner cases
+            if (vision_rooms_row == 0 or vision_rooms_row == self.rows - 1) and (vision_rooms_col == 0 or vision_rooms_col == self.cols - 1):
+                if vision_rooms_row == 0 and vision_rooms_col == 0:
+                    for row in range(vision_rooms_row, vision_rooms_row + 2):
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                elif vision_rooms_row == 0 and vision_rooms_col == self.cols - 1:
+                    for row in range(vision_rooms_row, vision_rooms_row + 2):
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                elif vision_rooms_row == self.rows - 1 and vision_rooms_col == 0:
+                    for row in range(vision_rooms_row - 1, vision_rooms_row + 1):
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                else:
+                    for row in range(vision_rooms_row - 1, vision_rooms_row + 1):
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+            else:
+                #dungeon edge cases
+                if vision_rooms_row == 0:
+                    for row in range(vision_rooms_row, vision_rooms_row + 2):
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                elif vision_rooms_row == self.rows - 1:
+                    for row in range(vision_rooms_row - 1, vision_rooms_row + 1):
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                elif vision_rooms_col == 0:
+                    for row in range(vision_rooms_row - 1, vision_rooms_row + 2):
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col, vision_rooms_col + 2):
+                            self.rooms[row][col].draw_bottom()
+                        print()
+                else:
+                    for row in range(vision_rooms_row - 1, vision_rooms_row + 2):
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_top()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_middle()
+                        print()
+                        for col in range(vision_rooms_col - 1, vision_rooms_col + 1):
+                            self.rooms[row][col].draw_bottom()
+                        print()
