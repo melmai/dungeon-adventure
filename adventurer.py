@@ -127,3 +127,8 @@ class Adventurer:
         """This method checks to see if all pillars are found and returns a boolean."""
         return self._pillars["abstraction"] and self._pillars["encapsulation"] \
             and self._pillars["inheritance"] and self._pillars["polymorphism"]
+    
+    def pit_damage(self):
+        """When adventurer enters a room their health will be modified"""
+        damage = random.randint(1,21)
+        self.health -= damage
