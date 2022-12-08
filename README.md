@@ -12,6 +12,8 @@
 
 **`.pillars`** <br>Returns the current status of each pillar in the inventory
 
+**`.location`**<br>Returns the current Room of the Adventurer
+
 ---
 
 ### Methods
@@ -29,5 +31,7 @@
 **`.use_healing_potion()`**<br>Updates the HP of the Adventurer, up to max HP using the most recently added Healing Potion.<br>Returns amount healed.
 
 **`.add_pillar(pillar: String)`**<br>Adds a pillar to the inventory
+
+**`.move(room: Room)`**<br>Updates the current location of the Adventurer
 
 **`.mission_complete()`**<br>Checks the inventory to see if all pillars found.<br>Returns `True` if all pillars collected, `False` otherwise.
