@@ -105,7 +105,7 @@ class Adventurer:
         # check to see that there are potions available
         if len(self._healing_potions) > 0:
             potion = self._healing_potions.pop()
-            self.update_health(potion.strength)
+            self._health += potion.strength
 
             # make sure current HP does not exceed max HP
             if self.health > self._health_max: 
