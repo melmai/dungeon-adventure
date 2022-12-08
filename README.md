@@ -2,6 +2,10 @@
 
 ## Adventurer Class
 
+To create an instance of the Adventurer:
+
+**`my_adventurer = Adventurer(name: String, location: Room = None)`**<br>Creates an instance of an Adventurer, with an optional Room argument to set the initial location.
+
 ### Properties
 
 **`.name`** <br>Returns the name of the Adventurer

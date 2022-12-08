@@ -6,12 +6,12 @@ from room import Room
 class Adventurer:
     """This class creates an Adventurer that will traverse the dungeon."""
 
-    def __init__(self, name):
+    def __init__(self, name, location=None):
         # randomly generate the adventurer's health
         health = random.randint(75, 100)
 
         self._name = name
-        self._location = None  # should adventurer be start with an initial room?
+        self._location = location
         self._health = self._health_max = health
         self._healing_potions = [
             HealingPotion(),
