@@ -74,16 +74,6 @@ class Adventurer:
         else:
             self._health -= random.randint(1, 20)
 
-    def __str__(self):
-        """This method returns a string representation of the Adventurer."""
-        details = ""
-        details += self._name + "\n"
-        details += f"HP {self.health}/{self._health_max}\n\n"
-        details += self.healing_potions + "\n"
-        details += f"Vision Potions: {self._vision_potions}\n\n"
-        details += self.pillars
-        return details
-
     def add_vision_potion(self):
         """This method increments inventory value of Vision Potions"""
         self._vision_potions += 1
@@ -149,3 +139,13 @@ class Adventurer:
         """This method checks to see if all pillars are found and returns a boolean."""
         return self._pillars["abstraction"] and self._pillars["encapsulation"] \
             and self._pillars["inheritance"] and self._pillars["polymorphism"]
+
+    def __str__(self):
+        """This method returns a string representation of the Adventurer."""
+        details = ""
+        details += self._name + "\n"
+        details += f"HP {self.health}/{self._health_max}\n\n"
+        details += self.healing_potions + "\n"
+        details += f"Vision Potions: {self._vision_potions}\n\n"
+        details += self.pillars
+        return details
