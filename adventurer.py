@@ -1,5 +1,6 @@
 import random
 from potion import HealingPotion
+from room import Room
 
 
 class Adventurer:
@@ -10,6 +11,7 @@ class Adventurer:
         health = random.randint(75, 100)
 
         self._name = name
+        self._location = None  # should adventurer be start with an initial room?
         self._health = self._health_max = health
         self._healing_potions = [
             HealingPotion(),
@@ -54,6 +56,14 @@ class Adventurer:
             result = 1 if status else 0
             pillars += f"{pillar.capitalize()}: {result}/1\n"
         return pillars    
+
+    def move(self, room):
+        """This method updates the current location of the Adventurer"""
+        # check to make sure a room is being passed
+        if isinstance(room, Room):
+            self._location = room
+        else:
+            raise TypeError("That's not a room...")
         
     def take_damage(self, damage=None):
         """This method lowers the current HP of the Adventurer after taking damage."""
