@@ -1,5 +1,6 @@
 import random
 from potion import HealingPotion
+from room import Room
 
 
 class Adventurer:
@@ -10,6 +11,7 @@ class Adventurer:
         health = random.randint(75, 100)
 
         self._name = name
+        self._location = None  # should adventurer be start with an initial room?
         self._health = self._health_max = health
         self._healing_potions = [
             HealingPotion(),
@@ -27,6 +29,11 @@ class Adventurer:
     def name(self):
         """This method returns the Adventurer's name."""
         return self._name
+
+    @property
+    def location(self):
+        """This method returns the current location of the Adventurer"""
+        return self._location
 
     @property
     def health(self):
@@ -53,7 +60,15 @@ class Adventurer:
         for pillar, status in self._pillars.items():
             result = 1 if status else 0
             pillars += f"{pillar.capitalize()}: {result}/1\n"
-        return pillars    
+        return pillars
+
+    def move(self, room):
+        """This method updates the current location of the Adventurer"""
+        # check to make sure a room is being passed
+        if isinstance(room, Room):
+            self._location = room
+        else:
+            raise TypeError("That's not a room...")
         
     def take_damage(self, damage=None):
         """This method lowers the current HP of the Adventurer after taking damage."""
@@ -63,16 +78,6 @@ class Adventurer:
         # otherwise, generate damage amount between 1-20
         else:
             self._health -= random.randint(1, 20)
-
-    def __str__(self):
-        """This method returns a string representation of the Adventurer."""
-        details = ""
-        details += self._name + "\n"
-        details += f"HP {self.health}/{self._health_max}\n\n"
-        details += self.healing_potions + "\n"
-        details += f"Vision Potions: {self._vision_potions}\n\n"
-        details += self.pillars
-        return details
 
     def add_vision_potion(self):
         """This method increments inventory value of Vision Potions"""
@@ -139,3 +144,13 @@ class Adventurer:
         """This method checks to see if all pillars are found and returns a boolean."""
         return self._pillars["abstraction"] and self._pillars["encapsulation"] \
             and self._pillars["inheritance"] and self._pillars["polymorphism"]
+
+    def __str__(self):
+        """This method returns a string representation of the Adventurer."""
+        details = ""
+        details += self._name + "\n"
+        details += f"HP {self.health}/{self._health_max}\n\n"
+        details += self.healing_potions + "\n"
+        details += f"Vision Potions: {self._vision_potions}\n\n"
+        details += self.pillars
+        return details
