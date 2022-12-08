@@ -16,7 +16,7 @@ print()
 
 # test damage
 print("Ouch that hurts.")
-player1.update_health(10, True)
+player1.take_damage()
 print(player1)
 print()
 
