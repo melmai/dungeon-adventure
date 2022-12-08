@@ -26,7 +26,7 @@
 
 **`.add_healing_potion(healing_potion: HealingPotion = None)`**<br>Adds a Healing Potion object to the inventory. Accepts an optional `HealingPotion` object to add. If none provided, will generate one.
 
-**`.use_healing_potion()`**<br>Updates the HP of the Adventurer, up to max HP using the most recently added Healing Potion.
+**`.use_healing_potion()`**<br>Updates the HP of the Adventurer, up to max HP using the most recently added Healing Potion.<br>Returns amount healed.
 
 **`.add_pillar(pillar: String)`**<br>Adds a pillar to the inventory
 
