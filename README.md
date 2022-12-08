@@ -18,7 +18,7 @@
 
 **`.health(hp: Int)`**<br>Sets the provided value to the Adventurer's HP
 
-**`.take_damage(strength: Int)`**<br>Lowers the HP of the Adventurer by the amount provided.
+**`.take_damage(damage: Int = None)`**<br>Lowers the HP of the Adventurer by the damage amount provided. If no damage provided, generates an amount between 1-20.
 
 **`.add_vision_potion()`**<br>Increments inventory value of Vision Potions
 
@@ -26,7 +26,7 @@
 
 **`.add_healing_potion(healing_potion: HealingPotion = None)`**<br>Adds a Healing Potion object to the inventory. Accepts an optional `HealingPotion` object to add. If none provided, will generate one.
 
-**`.use_healing_potion()`**<br>Updates the HP of the Adventurer, up to max HP using the most recently added Healing Potion.
+**`.use_healing_potion()`**<br>Updates the HP of the Adventurer, up to max HP using the most recently added Healing Potion.<br>Returns amount healed.
 
 **`.add_pillar(pillar: String)`**<br>Adds a pillar to the inventory
 

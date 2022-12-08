@@ -10,19 +10,22 @@ print()
 
 # test healing potion use
 print("Trying out a health potion!")
-player1.use_healing_potion()
+potion_strength = player1.use_healing_potion()
+print(f"Amount healed: {potion_strength}")
 print(player1)
 print()
 
 # test damage
-print("Ouch that hurts.")
-player1.update_health(10, True)
+print("Falling into a pit! Oh noooooo...")
+player1.take_damage()
+print("Ouch that hurt...")
 print(player1)
 print()
 
 # try healing again
-print("Ok now lets heal it up")
-player1.use_healing_potion()
+print("Ok now lets heal up...")
+potion_strength = player1.use_healing_potion()
+print(f"Drinking a potion of {potion_strength} strength!")
 print(player1)
 print()
 
@@ -34,13 +37,13 @@ print(player1)
 # mission complete?
 print(f"Check to see if all pillars found: {player1.mission_complete()}\n")
 
-# simulate all pillars found
+# simulate all pillars found; will only find one per room.
 player1.add_pillar("abstraction")
 player1.add_pillar("encapsulation")
 player1.add_pillar("inheritance")
 player1.add_pillar("polymorphism")
 
 # mission complete?
-print("OK now we've found them all!\n")
+print("OK now we've found them all! Let's get outta here.\n")
 print(player1)
 print(f"Check to see if all pillars found: {player1.mission_complete()}")
