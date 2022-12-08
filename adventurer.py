@@ -55,9 +55,14 @@ class Adventurer:
             pillars += f"{pillar.capitalize()}: {result}/1\n"
         return pillars    
         
-    def take_damage(self, strength):
-        """This method updates the current HP of the Adventurer after taking damage."""
-        self._health -= strength
+    def take_damage(self, damage=None):
+        """This method lowers the current HP of the Adventurer after taking damage."""
+        # use the damage amount if provided
+        if damage is not None:
+            self._health -= damage
+        # otherwise, generate damage amount between 1-20
+        else:
+            self._health -= random.randint(1, 20)
 
     def __str__(self):
         """This method returns a string representation of the Adventurer."""
@@ -127,8 +132,3 @@ class Adventurer:
         """This method checks to see if all pillars are found and returns a boolean."""
         return self._pillars["abstraction"] and self._pillars["encapsulation"] \
             and self._pillars["inheritance"] and self._pillars["polymorphism"]
-    
-    def pit_damage(self):
-        """When adventurer enters a room their health will be modified"""
-        damage = random.randint(1,21)
-        self.health -= damage
