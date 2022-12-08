@@ -31,6 +31,11 @@ class Adventurer:
         return self._name
 
     @property
+    def location(self):
+        """This method returns the current location of the Adventurer"""
+        return self._location
+
+    @property
     def health(self):
         """This method gets the current HP value of the Adventurer."""
         return self._health
@@ -55,7 +60,7 @@ class Adventurer:
         for pillar, status in self._pillars.items():
             result = 1 if status else 0
             pillars += f"{pillar.capitalize()}: {result}/1\n"
-        return pillars    
+        return pillars
 
     def move(self, room):
         """This method updates the current location of the Adventurer"""

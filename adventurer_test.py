@@ -1,4 +1,5 @@
 from adventurer import Adventurer
+from room import Room
 
 # create test players
 player1 = Adventurer("Mel")
@@ -7,6 +8,11 @@ print()
 player2 = Adventurer("Mel2")
 print(player2)
 print()
+
+# create room and enter it
+room = Room(0,0)
+player1.move(room)
+print(player1.location)
 
 # test healing potion use
 print("Trying out a health potion!")
