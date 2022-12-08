@@ -1,4 +1,4 @@
-from maze import Room
+from room import Room
 from dungeon import Dungeon
 
 my_map = Dungeon(5, 5)  # assume the rows and columns must be greater than 1

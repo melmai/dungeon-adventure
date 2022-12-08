@@ -1,4 +1,4 @@
-from maze import Room
+from room import Room
 import random
 
 class Dungeon:
