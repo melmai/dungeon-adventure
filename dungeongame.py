@@ -108,3 +108,4 @@ elif choice == "E":
     print("Game ended by player")
 else:
     print("You died :(")
+dungeon_draw()
