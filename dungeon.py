@@ -80,6 +80,8 @@ class Dungeon:
     def get_room(self, row, col):
         """"Returns a room in the maze"""
         if (row >= self.rows or row < 0) or (col >= self.cols or col < 0):
+            print(row)
+            print(col)
             raise IndexError("Out of Dunegon's boundary.")
         return self.rooms[row][col]
 
