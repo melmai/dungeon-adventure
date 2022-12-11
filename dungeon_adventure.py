@@ -39,26 +39,25 @@ class DungeonAdventure:
 
     def create_dungeon(self):
         """Creates dungeon based on player input"""
+        size = 0
 
-        while self._difficulty == 0:
+        while size == 0:
             # get user input
             difficulty = input("Choose your difficulty level (1 - Easy, 2 - Medium, 3 - Hard)\n")
 
             # set difficulty and dungeon size
             if difficulty == "1":
-                self._difficulty = int(difficulty)
                 size = 5
             elif difficulty == "2":
-                self._difficulty = int(difficulty)
                 size = 7
             elif difficulty == "3":
-                self._difficulty = int(difficulty)
                 size = 10
             else:
                 print("Hmm, that's not an option...\n")
 
-        # create and set dungeon
+        # create/set dungeon and difficulty
         self._dungeon = Dungeon(size, size)
+        self._difficulty = int(difficulty)
 
 
 
