@@ -44,6 +44,7 @@ class DungeonAdventure:
             # get user input
             difficulty = input("Choose your difficulty level (1 - Easy, 2 - Medium, 3 - Hard)\n")
 
+            # set difficulty and dungeon size
             if difficulty == "1":
                 self._difficulty = int(difficulty)
                 size = 5
@@ -56,6 +57,7 @@ class DungeonAdventure:
             else:
                 print("Hmm, that's not an option...\n")
 
+        # create and set dungeon
         self._dungeon = Dungeon(size, size)
 
 
