@@ -36,6 +36,24 @@ class DungeonAdventure:
         name = input("What shall we call you, oh brave adventurer?\n")
         self._player = Adventurer(name)
 
+    def create_dungeon(self):
+        """Creates dungeon based on player input"""
+        created = False
+
+        while not created:
+            difficulty = input("Choose your difficulty level (1 - Easy, 2 - Medium, 3 - Hard)\n")
+
+            if difficulty == "1":
+                self._dungeon = Dungeon(5, 5)
+                created = True
+            elif difficulty == "2":
+                self._dungeon = Dungeon(7, 7)
+                created = True
+            elif difficulty == "3":
+                self._dungeon = Dungeon(10, 10)
+                created = True
+            else:
+                print("Hmm, that's not an option...\n")
 
 
 
@@ -43,6 +61,7 @@ if __name__ == '__main__':
     game = DungeonAdventure()
     game.create_player()
     print(game.player)
-    print(game)
+    game.create_dungeon()
+    print(game.dungeon)
 
         
