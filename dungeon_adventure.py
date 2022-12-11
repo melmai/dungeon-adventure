@@ -56,8 +56,12 @@ class DungeonAdventure:
                 print("Hmm, that's not an option...\n")
 
         # create/set dungeon and difficulty
-        self._dungeon = Dungeon(size, size)
+        dungeon = Dungeon(size, size)
+        dungeon.generate()
+        dungeon.fill_rooms()
+        self._dungeon = dungeon
         self._difficulty = int(difficulty)
+
 
     def print_game_options(self):
         output = """
@@ -77,6 +81,6 @@ if __name__ == '__main__':
     game.create_player()
     print(game.player)
     game.create_dungeon()
-    print(game.dungeon)
+    game.dungeon.draw()
     game.print_game_options()
         
