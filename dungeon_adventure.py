@@ -59,6 +59,17 @@ class DungeonAdventure:
         self._dungeon = Dungeon(size, size)
         self._difficulty = int(difficulty)
 
+    def print_game_options(self):
+        output = """
+        Movement:
+        n = north, s = south, e = east, w = west
+        x = exit (requires all 4 pillars)
+
+        Use Inventory Items:
+        h = healing potion, v = vision potion
+        """
+
+        print(output)
 
 
 if __name__ == '__main__':
@@ -67,5 +78,5 @@ if __name__ == '__main__':
     print(game.player)
     game.create_dungeon()
     print(game.dungeon)
-
+    game.print_game_options()
         
