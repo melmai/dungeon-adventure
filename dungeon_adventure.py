@@ -36,12 +36,13 @@ class DungeonAdventure:
         """Prints game instructions for player"""
         intro = """
         This is an adventure game where a hero is randomly placed 
-        within a dungeon, which is randomly generated. The adventurer 
-        needs to find the four Pillars of OO (Abstraction, Encapsulation, 
+        within a dungeon, which is randomly generated. Your goal is to 
+        find the four Pillars of OO (Abstraction, Encapsulation, 
         Inheritance, and Polymorphism) and take them to the exit to win 
         the game. Some features of the dungeon will prove a hindrance to 
-        the adventurer's task (pits), while some will prove helpful. For 
-        menu options at any time press m (healing and vision potions).
+        the adventurer's task (pits), while some will prove helpful (potions). 
+        
+        For menu options at any time press (o).
 
         Game starting...
         """
@@ -50,9 +51,9 @@ class DungeonAdventure:
 
     def play_game(self):
         """Enters player into game loop"""
-        self.print_game_options()
         while not self._game_over:
-            command = input("Enter a direction or use item:\n")
+            command = input("What do you want to do? (o) see actions / (q) "
+                            "quit:\n")
             print()
 
             # if input is valid command
@@ -62,6 +63,11 @@ class DungeonAdventure:
                 elif command == "x":  # exit
                     if self.check_win():
                         self._game_over = True
+                    elif self.player.mission_complete():
+                        print("This isn't the exit...")
+                    else:
+                        print("I'm afraid you're missing some pillars, "
+                              "friend. Check your inventory.")
                 elif command == "h":  # use healing potion
                     self._player.use_healing_potion()
                 elif command == "v":  # use vision potion
@@ -77,17 +83,22 @@ class DungeonAdventure:
                     self.print_game_options()
                 elif command == "m":  # view map
                     self.dungeon.draw()
+                    print("\nHey now, no peeking!")
+                elif command == "r":
+                    print(self.active_room)
+                    print()
                 else:  # otherwise player wants to move
 
                     # if there's a door, move rooms
                     if self.is_move_valid(command):
                         self.move(command)
                         print(self.active_room)
+                        print()
                         self.check_room_inventory()
                     # otherwise let player know
                     else:
-                        print("The way is blocked!")
                         print(self.active_room)
+                        print("\nThe way is blocked!")
 
             else:
                 print("Sorry, that doesn't make sense.")
@@ -98,7 +109,7 @@ class DungeonAdventure:
     @staticmethod
     def is_valid(command):
         return True if command in ["w", "a", "s", "d", "x", "v", "h", "q",
-                                   "i", "o", "m"] else False
+                                   "i", "o", "m", "r"] else False
 
     def check_win(self):
         return self.active_room is not None and self.active_room.is_exit() \
@@ -164,8 +175,11 @@ class DungeonAdventure:
         # set active room to entrance
         self._active_room = dungeon.get_room(dungeon.entrance_row,
                                              dungeon.entrance_col)
+
+        # show play options and print current room
         print()
         print(self.active_room)
+        print("\nYou wake up in a cold, dark room...")
 
     @staticmethod
     def print_game_options():
@@ -179,10 +193,10 @@ class DungeonAdventure:
         h = healing potion, v = vision potion
         
         Actions:
+        r = inspect current room
         o = check action options
-        i = check inventory
+        i = check status and inventory
         q = quit
-
         """
 
         print(textwrap.dedent(output))
@@ -222,7 +236,8 @@ class DungeonAdventure:
                 else:
                     hp = HealingPotion()
                     self._player.add_healing_potion(hp)
-                    print(f"A healing potion of {hp.strength} strength")
+                    print(f"Adding a healing potion of {hp.strength} "
+                          f"strength to your inventory.")
 
                 self.active_room.remove_potion(potion)
 
@@ -231,7 +246,7 @@ class DungeonAdventure:
             damage = self.active_room.pit.damage
             self.player.take_damage(damage)
             print(f"You have fallen into a pit and take {damage} damage.")
-            print(f"HP {self.player.health} / {self.player.max_health}")
+            print(f"HP {self.player.health} / {self.player.max_health}\n")
 
         # check if there are pillars
         pillars = ["inheritance", "abstraction", "encapsulation",
@@ -240,7 +255,7 @@ class DungeonAdventure:
             if self.active_room.has_pillar(pillar):
                 self._player.add_pillar(pillar)
                 self.active_room.remove_pillar(pillar)
-                print(f"\nYou found the {pillar} pillar!")
+                print(f"You found the {pillar} pillar!")
 
                 # this should only run once
                 if self._player.mission_complete():

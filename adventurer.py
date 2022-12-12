@@ -119,10 +119,15 @@ class Adventurer:
         elif len(self._healing_potions) > 0:
             potion = self._healing_potions.pop()
             self._health += potion.strength
+            print(f"Drinking potion of {potion.strength} strength...")
+            print("Ahh... much better.")
 
             # make sure current HP does not exceed max HP
-            if self.health > self._health_max:
-                self.health = self._health_max
+            if self.health > self.max_health:
+                self.health = self.max_health
+
+            # inform player of current HP
+            print(f"HP {self.health} / {self.max_health}")
 
             return potion.strength
 
