@@ -12,6 +12,8 @@ class DungeonAdventure:
         self._game_over = False
         self._can_exit = False
         self._found_exit = False
+        self.print_intro()
+        self.start_game()
 
     @property
     def player(self):
@@ -67,7 +69,7 @@ class DungeonAdventure:
                     potion_removed = self._player.use_vision_potion() # true if potion used, false otherwise
                     if potion_removed:
                         self._dungeon.vision_potion(self._active_room.row, self._active_room.col)
-                elif command == "i": # check inventory
+                elif command == "i": # check status and inventory
                     print(self._player)
                     print(self._active_room)
                 else: # otherwise player wants to move
@@ -95,17 +97,26 @@ class DungeonAdventure:
 
     
     def check_win(self):
-        return self._active_room.is_exit() and self._player.mission_complete()
+        return self._active_room is not None and self._active_room.is_exit() and self._player.mission_complete()
+
+    def start_game(self):
+        self.create_player()
+        self.create_dungeon()
+        self.play_game()
 
     def end_game(self, win):
         if win:
             print("You did it!")
+            print(self._player)
+            print()
             self._dungeon.draw()
         else:
             try_again = input("Try again? (y/n)\n")
             if try_again == "y":
-                self.create_dungeon()
-                self.play_game()
+                print("OK let's try it again! Creating a new dungeon...\n")
+                self._game_over = False
+                self.start_game()
+                
             elif try_again == "n":
                 print("OK, come back and try again!")
             else:
@@ -127,11 +138,11 @@ class DungeonAdventure:
 
             # set difficulty and dungeon size
             if difficulty == "1":
-                size = 5
+                size = 3
             elif difficulty == "2":
-                size = 7
+                size = 5
             elif difficulty == "3":
-                size = 10
+                size = 7
             else:
                 print("Hmm, that's not an option...\n")
 
@@ -144,6 +155,7 @@ class DungeonAdventure:
 
         # set active room to entrance
         self._active_room = dungeon.get_room(dungeon.entrance_row, dungeon.entrance_col)
+        print(self._active_room)
 
 
     def print_game_options(self):
@@ -230,11 +242,3 @@ class DungeonAdventure:
 
 if __name__ == '__main__':
     game = DungeonAdventure()
-    game.print_intro()
-    game.create_player()
-    print(game.player)
-    game.create_dungeon()
-    game.dungeon.draw()
-    game.print_game_options()
-    print(game.active_room)
-    game.play_game()
