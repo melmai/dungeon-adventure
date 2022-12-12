@@ -75,9 +75,9 @@ class DungeonAdventure:
         elif command == "x":  # exit
             if self.check_win():
                 self._game_over = True
-            elif self.player.mission_complete():
+            elif not self._active_room.exit:
                 print("This isn't the exit...")
-            else:
+            else:  # need more pillars
                 print("I'm afraid you're missing some pillars, "
                       "friend. Check your inventory.")
         elif command == "h":  # use healing potion
@@ -241,10 +241,8 @@ class DungeonAdventure:
             return self._active_room.south
         elif direction == "d":
             return self._active_room.east
-        elif direction == "a":
+        else:  # a
             return self._active_room.west
-        else:
-            raise Exception("That's not a valid direction!")
 
     def move(self, direction):
         """
