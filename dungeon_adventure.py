@@ -83,9 +83,11 @@ class DungeonAdventure:
             if potion_removed:
                 self._dungeon.vision_potion(self.active_room.row,
                                             self.active_room.col)
+                print()
         elif command == "i":  # check status and inventory
             print(self._player)
             print(self.active_room)
+            print()
         elif command == "o":  # check action options
             self.print_game_options()
         elif command == "m":  # view map
@@ -99,6 +101,7 @@ class DungeonAdventure:
             # if there's a door, move rooms
             if self.is_move_valid(command):
                 self.move(command)
+                print()
                 print(self.active_room)
                 print()
                 self.check_room_inventory()
