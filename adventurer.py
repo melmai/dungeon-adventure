@@ -80,9 +80,14 @@ class Adventurer:
         # use the damage amount if provided
         if damage is not None:
             self._health -= damage
+            self.print_health_status()
         # otherwise, generate damage amount between 1-20
         else:
             self._health -= random.randint(1, 20)
+
+    def print_health_status(self):
+        """Prints current health and max health."""
+        print(f"HP {self.health}/{self.max_health}")
 
     def add_vision_potion(self):
         """This method increments inventory value of Vision Potions"""
@@ -127,7 +132,7 @@ class Adventurer:
                 self.health = self.max_health
 
             # inform player of current HP
-            print(f"HP {self.health} / {self.max_health}")
+            self.print_health_status()
 
             return potion.strength
 

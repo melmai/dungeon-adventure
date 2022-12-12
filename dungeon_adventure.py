@@ -131,7 +131,7 @@ class DungeonAdventure:
         :return: Boolean
         """
         return self.active_room is not None and self.active_room.is_exit() \
-               and self._player.mission_complete()
+            and self.player.mission_complete()
 
     def start_game(self):
         """
@@ -144,7 +144,8 @@ class DungeonAdventure:
 
     def end_game(self, win):
         """
-        Congratulates the player if winning conditions are met and offers to restart the game
+        Congratulates the player if winning conditions are met and offers to
+        restart the game
         :param win: True if win conditions met
         :return: None
         """
@@ -281,9 +282,8 @@ class DungeonAdventure:
         # check if there are pits
         if self.active_room.has_pit():
             damage = self.active_room.pit.damage
-            self.player.take_damage(damage)
             print(f"You have fallen into a pit and take {damage} damage.")
-            print(f"HP {self.player.health} / {self.player.max_health}\n")
+            self.player.take_damage(damage)
 
         # check if there are pillars
         pillars = ["inheritance", "abstraction", "encapsulation",
