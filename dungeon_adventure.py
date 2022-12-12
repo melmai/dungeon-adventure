@@ -67,6 +67,9 @@ class DungeonAdventure:
                     potion_removed = self._player.use_vision_potion() # true if potion used, false otherwise
                     if potion_removed:
                         self._dungeon.vision_potion(self._active_room.row, self._active_room.col)
+                elif command == "i": # check inventory
+                    print(self._player)
+                    print(self._active_room)
                 else: # otherwise player wants to move
 
                     # if there's a door, move rooms
@@ -88,7 +91,7 @@ class DungeonAdventure:
         
         
     def is_valid(self, command):
-        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q"] else False
+        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q", "i"] else False
 
     
     def check_win(self):
@@ -152,6 +155,11 @@ class DungeonAdventure:
 
         Use Inventory Items:
         h = healing potion, v = vision potion
+        
+        Actions:
+        i = check inventory
+        q = quit
+
         """
 
         print(output)
@@ -211,7 +219,7 @@ class DungeonAdventure:
             if self._active_room.has_pillar(pillar):
                 self._player.add_pillar(pillar)
                 self._active_room.remove_pillar(pillar)
-                print(f"You found a {pillar} potion!")
+                print(f"\nYou found the {pillar} potion!")
 
         # check if exit and notify player
         if self._active_room.is_exit() and not self._found_exit:
