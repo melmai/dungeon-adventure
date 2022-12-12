@@ -6,7 +6,7 @@ import textwrap
 
 class DungeonAdventure:
     def __init__(self):
-        self._player = ""
+        self._player = None
         self._dungeon = None
         self._difficulty = 0
         self._active_room = None
@@ -31,7 +31,8 @@ class DungeonAdventure:
         """Returns the player's current room"""
         return self._active_room
 
-    def print_intro(self):
+    @staticmethod
+    def print_intro():
         """Prints game instructions for player"""
         intro = """
         This is an adventure game where a hero is randomly placed 
@@ -56,25 +57,27 @@ class DungeonAdventure:
 
             # if input is valid command
             if self.is_valid(command):
-                if command == "q": # quit
+                if command == "q":  # quit
                     self._game_over = True
-                elif command == "x": # exit
+                elif command == "x":  # exit
                     if self.check_win():
                         self._game_over = True
-                elif command == "h": # use healing potion
+                elif command == "h":  # use healing potion
                     self._player.use_healing_potion()
-                elif command == "v": # use vision potion
-                    potion_removed = self._player.use_vision_potion() # true if potion used, false otherwise
+                elif command == "v":  # use vision potion
+                    potion_removed = self._player.use_vision_potion()  #
+                    # true if potion used, false otherwise
                     if potion_removed:
-                        self._dungeon.vision_potion(self.active_room.row, self.active_room.col)
-                elif command == "i": # check status and inventory
+                        self._dungeon.vision_potion(self.active_room.row,
+                                                    self.active_room.col)
+                elif command == "i":  # check status and inventory
                     print(self._player)
                     print(self.active_room)
-                elif command == "o": # check action options
+                elif command == "o":  # check action options
                     self.print_game_options()
-                elif command == "m": # view map
+                elif command == "m":  # view map
                     self.dungeon.draw()
-                else: # otherwise player wants to move
+                else:  # otherwise player wants to move
 
                     # if there's a door, move rooms
                     if self.is_move_valid(command):
@@ -85,22 +88,21 @@ class DungeonAdventure:
                     else:
                         print("The way is blocked!")
                         print(self.active_room)
-        
+
             else:
                 print("Sorry, that doesn't make sense.")
                 self.print_game_options()
 
         self.end_game(self.check_win())
 
-        
-        
-    def is_valid(self, command):
+    @staticmethod
+    def is_valid(command):
         return True if command in ["n", "s", "e", "w", "x", "v", "h", "q",
                                    "i", "o", "m"] else False
 
-    
     def check_win(self):
-        return self.active_room is not None and self.active_room.is_exit() and self._player.mission_complete()
+        return self.active_room is not None and self.active_room.is_exit() \
+               and self._player.mission_complete()
 
     def start_game(self):
         self.create_player()
@@ -119,11 +121,11 @@ class DungeonAdventure:
                 print("OK let's try it again! Creating a new dungeon...\n")
                 self._game_over = False
                 self.start_game()
-                
+
             elif try_again == "n":
                 print("OK, come back and try again!")
             else:
-                try_again = input("Sorry, I didn't catch that...\n")
+                print("Sorry, I didn't catch that...\n")
                 self.end_game(False)
 
     def create_player(self):
@@ -134,10 +136,13 @@ class DungeonAdventure:
     def create_dungeon(self):
         """Creates dungeon based on player input"""
         size = 0
+        difficulty = self._difficulty
 
         while size == 0:
             # get user input
-            difficulty = input("Choose your difficulty level (1 - Easy, 2 - Medium, 3 - Hard)\n")
+            difficulty = input(
+                "Choose your difficulty level (1 - Easy, 2 - Medium, "
+                "3 - Hard)\n")
 
             # set difficulty and dungeon size
             if difficulty == "1":
@@ -157,12 +162,13 @@ class DungeonAdventure:
         self._difficulty = int(difficulty)
 
         # set active room to entrance
-        self._active_room = dungeon.get_room(dungeon.entrance_row, dungeon.entrance_col)
+        self._active_room = dungeon.get_room(dungeon.entrance_row,
+                                             dungeon.entrance_col)
         print()
         print(self.active_room)
 
-
-    def print_game_options(self):
+    @staticmethod
+    def print_game_options():
         """Provides movement and action keys for the player"""
         output = """
         Movement:
@@ -196,7 +202,7 @@ class DungeonAdventure:
 
     def move(self, direction):
         """Changes the active room of the game"""
-        directions = {"n": (-1,0), "s": (1, 0), "e": (0, 1), "w": (0, -1)}
+        directions = {"n": (-1, 0), "s": (1, 0), "e": (0, 1), "w": (0, -1)}
         movement = directions.get(direction)
         self._active_room = self._dungeon.get_room(
             self.active_room.row + movement[0],
@@ -204,7 +210,8 @@ class DungeonAdventure:
         )
 
     def check_room_inventory(self):
-        """Checks active room to see if it has items and transfers if present"""
+        """Checks active room to see if it has items and transfers if
+        present"""
         # check if there are potions
         potions = ["healing", "vision"]
         for potion in potions:
@@ -225,7 +232,8 @@ class DungeonAdventure:
             print("You have fallen into a pit")
 
         # check if there are pillars
-        pillars = ["inheritance", "abstraction", "encapsulation", "polymorphism"]
+        pillars = ["inheritance", "abstraction", "encapsulation",
+                   "polymorphism"]
         for pillar in pillars:
             if self.active_room.has_pillar(pillar):
                 self._player.add_pillar(pillar)
@@ -241,7 +249,7 @@ class DungeonAdventure:
         # check if exit and notify player
         if self.active_room.is_exit() and not self._found_exit:
             print("Congratulations! You've found the exit!")
-            print("To exit, you must have all 4 pillars in your posession.")
+            print("To exit, you must have all 4 pillars in your possession.")
             self._found_exit = True
 
 
