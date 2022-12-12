@@ -69,9 +69,10 @@ class Adventurer:
             self._location = room
         else:
             raise TypeError("That's not a room...")
-        
+
     def take_damage(self, damage=None):
-        """This method lowers the current HP of the Adventurer after taking damage."""
+        """This method lowers the current HP of the Adventurer after taking
+        damage."""
         # use the damage amount if provided
         if damage is not None:
             self._health -= damage
@@ -90,7 +91,7 @@ class Adventurer:
             self._vision_potions -= 1
             return True
         # otherwise let the user know they're out of potions
-        else: 
+        else:
             print("Sorry, no vision potions available!")
             return False
 
@@ -116,7 +117,7 @@ class Adventurer:
             self._health += potion.strength
 
             # make sure current HP does not exceed max HP
-            if self.health > self._health_max: 
+            if self.health > self._health_max:
                 self.health = self._health_max
 
             return potion.strength
@@ -124,7 +125,7 @@ class Adventurer:
         # if not, let the user know
         else:
             print("Sorry, no health potions available!")
-            
+
         return 0
 
     def add_pillar(self, pillar):
@@ -139,11 +140,14 @@ class Adventurer:
             self._pillars["polymorphism"] = True
         else:
             raise Exception("That's not a pillar...")
-    
+
     def mission_complete(self):
-        """This method checks to see if all pillars are found and returns a boolean."""
-        return self._pillars["abstraction"] and self._pillars["encapsulation"] \
-            and self._pillars["inheritance"] and self._pillars["polymorphism"]
+        """This method checks to see if all pillars are found and returns a
+        boolean."""
+        return self._pillars["abstraction"] and self._pillars[
+            "encapsulation"] \
+               and self._pillars["inheritance"] and self._pillars[
+                   "polymorphism"]
 
     def __str__(self):
         """This method returns a string representation of the Adventurer."""

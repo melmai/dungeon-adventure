@@ -1,6 +1,7 @@
 from adventurer import Adventurer
 from dungeon import Dungeon
 from potion import HealingPotion
+import textwrap
 
 
 class DungeonAdventure:
@@ -44,12 +45,13 @@ class DungeonAdventure:
         Game starting...
         """
 
-        print(intro)
+        print(textwrap.dedent(intro))
 
     def play_game(self):
         """Enters player into game loop"""
+        self.print_game_options()
         while not self._game_over:
-            command = input("\nEnter a direction or use item:\n")
+            command = input("Enter a direction or use item:\n")
             print()
 
             # if input is valid command
@@ -68,6 +70,8 @@ class DungeonAdventure:
                 elif command == "i": # check status and inventory
                     print(self._player)
                     print(self.active_room)
+                elif command == "o": # check action options
+                    self.print_game_options()
                 else: # otherwise player wants to move
 
                     # if there's a door, move rooms
@@ -89,7 +93,8 @@ class DungeonAdventure:
         
         
     def is_valid(self, command):
-        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q", "i"] else False
+        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q",
+                                   "i", "o"] else False
 
     
     def check_win(self):
@@ -151,6 +156,7 @@ class DungeonAdventure:
 
         # set active room to entrance
         self._active_room = dungeon.get_room(dungeon.entrance_row, dungeon.entrance_col)
+        print()
         print(self.active_room)
 
 
@@ -165,12 +171,13 @@ class DungeonAdventure:
         h = healing potion, v = vision potion
         
         Actions:
+        o = check action options
         i = check inventory
         q = quit
 
         """
 
-        print(output)
+        print(textwrap.dedent(output))
 
     def is_move_valid(self, direction):
         """Checks to see if player can move in provided direction"""
