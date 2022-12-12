@@ -97,7 +97,7 @@ class DungeonAdventure:
 
     @staticmethod
     def is_valid(command):
-        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q",
+        return True if command in ["w", "a", "s", "d", "x", "v", "h", "q",
                                    "i", "o", "m"] else False
 
     def check_win(self):
@@ -172,7 +172,7 @@ class DungeonAdventure:
         """Provides movement and action keys for the player"""
         output = """
         Movement:
-        n = north, s = south, e = east, w = west
+        w = north, s = south, d = east, a = west
         x = exit (requires all 4 pillars)
 
         Use Inventory Items:
@@ -189,20 +189,20 @@ class DungeonAdventure:
 
     def is_move_valid(self, direction):
         """Checks to see if player can move in provided direction"""
-        if direction == "n":
+        if direction == "w":
             return self._active_room.north
         elif direction == "s":
             return self._active_room.south
-        elif direction == "e":
+        elif direction == "d":
             return self._active_room.east
-        elif direction == "w":
+        elif direction == "a":
             return self._active_room.west
         else:
             raise Exception("That's not a valid direction!")
 
     def move(self, direction):
         """Changes the active room of the game"""
-        directions = {"n": (-1, 0), "s": (1, 0), "e": (0, 1), "w": (0, -1)}
+        directions = {"w": (-1, 0), "s": (1, 0), "d": (0, 1), "a": (0, -1)}
         movement = directions.get(direction)
         self._active_room = self._dungeon.get_room(
             self.active_room.row + movement[0],
