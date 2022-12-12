@@ -46,7 +46,12 @@ class DungeonAdventure:
 
     def play_game(self):
         """Enters player into game loop"""
-        pass
+        command = input("Enter a direction or use item:\n")
+        if self.is_move_valid(command):
+            self.move(command)
+            print(self._active_room)
+        else:
+            print("The way is blocked!")
 
     def create_player(self):
         """Gets name for player and creates instance of Adventurer"""
@@ -95,7 +100,27 @@ class DungeonAdventure:
 
         print(output)
 
-    
+    def is_move_valid(self, direction):
+        if direction == "n":
+            return self._active_room.north
+        if direction == "s":
+            return self._active_room.south
+        if direction == "e":
+            return self._active_room.east
+        if direction == "w":
+            return self._active_room.west
+        else:
+            raise Exception("That's not a valid direction!")
+
+
+
+    def move(self, direction):
+        directions = {"n": (0, -1), "s": (0, 1), "e": (1, 0), "w": (-1, 0)}
+        movement = directions.get(direction)
+        self._active_room = self._dungeon.get_room(
+            self._active_room.row + movement[0],
+            self._active_room.col + movement[1]
+        )
 
 
 if __name__ == '__main__':
@@ -107,3 +132,4 @@ if __name__ == '__main__':
     game.dungeon.draw()
     game.print_game_options()
     print(game.active_room)
+    game.play_game()
