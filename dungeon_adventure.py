@@ -228,8 +228,10 @@ class DungeonAdventure:
 
         # check if there are pits
         if self.active_room.has_pit():
-            self._player.take_damage()
-            print("You have fallen into a pit")
+            damage = self.active_room.pit.damage
+            self.player.take_damage(damage)
+            print(f"You have fallen into a pit and take {damage} damage.")
+            print(f"HP {self.player.health} / {self.player.max_health}")
 
         # check if there are pillars
         pillars = ["inheritance", "abstraction", "encapsulation",

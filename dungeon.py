@@ -1,4 +1,5 @@
 from room import Room
+from pit import Pit
 import random
 
 
@@ -116,7 +117,7 @@ class Dungeon:
                     elif item == "Vision":
                         self.get_room(choice[0], choice[1]).vision_potion = True
                     elif item == "Pit":
-                        self.get_room(choice[0], choice[1]).pit = True
+                        self.get_room(choice[0], choice[1]).pit = Pit()
 
     def vision_potion(self, player_row, player_col):
         """When player uses a vision potion this method will display the player room and all surrounding rooms."""

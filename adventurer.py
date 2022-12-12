@@ -46,6 +46,10 @@ class Adventurer:
         self._health = hp
 
     @property
+    def max_health(self):
+        return self._health_max
+
+    @property
     def healing_potions(self):
         """This method gets the current healing potions in the inventory."""
         potion_details = "Healing Potions: "
