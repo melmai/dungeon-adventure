@@ -133,15 +133,12 @@ class DungeonAdventure:
     def check_room_inventory(self):
         """Checks active room to see if it has items and transfers if present"""
         # check if there are potions
-        if self._active_room.has_potion("healing"):
-            self._player.add_healing_potion()
-            self._active_room.remove_potion("healing")
-            print("You found a healing potion!")
-
-        if self._active_room.has_potion("vision"):
-            self._player.add_vision_potion()
-            self._active_room.remove_potion("vision")
-            print("You found a vision potion!")
+        potions = ["healing", "vision"]
+        for potion in potions:
+            if self._active_room.has_potion(potion):
+                self._player.add_healing_potion()
+                self._active_room.remove_potion(potion)
+                print(f"You found a {potion} potion!")
 
         # check if there are pits
         if self._active_room.has_pit():
@@ -149,25 +146,12 @@ class DungeonAdventure:
             print("You have fallen into a pit")
 
         # check if there are pillars
-        if self._active_room.has_pillar("inheritance"):
-            self._player.add_pillar("inheritance")
-            self._active_room.remove_pillar("inheritance")
-
-        if self._active_room.has_pillar("abstraction"):
-            self._player.add_pillar("abstraction")
-            self._active_room.remove_pillar("abstraction")
- 
-        if self._active_room.has_pillar("encapsulation"):
-            self._player.add_pillar("encapsulation")
-            self._active_room.remove_pillar("encapsulation")
-
-        if self._active_room.has_pillar("polymorphism"):
-            self._player.add_pillar("polymorphism")
-            self._active_room.remove_pillar("polymorphism")
-
-        
-
-
+        pillars = ["inheritance", "abstraction", "encapsulation", "polymorphism"]
+        for pillar in pillars:
+            if self._active_room.has_pillar(pillar):
+                self._player.add_pillar(pillar)
+                self._active_room.remove_pillar(pillar)
+                print(f"You found a {pillar} potion!")
 
 
 if __name__ == '__main__':
