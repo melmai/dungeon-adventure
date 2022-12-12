@@ -65,6 +65,11 @@ class DungeonAdventure:
         self.end_game(self.check_win())
 
     def execute_command(self, command):
+        """
+        Runs player command
+        :param command: keyboard input from player
+        :return: None
+        """
         if command == "q":  # quit
             self._game_over = True
         elif command == "x":  # exit
@@ -112,19 +117,37 @@ class DungeonAdventure:
 
     @staticmethod
     def is_valid(command):
+        """
+        Checks to see if the player's input is a valid command
+        :param command: keyboard input from player
+        :return: Boolean
+        """
         return command in ["w", "a", "s", "d", "x", "v", "h", "q", "i", "o",
                            "m", "r"]
 
     def check_win(self):
+        """
+        Checks to see if the player has all pillars while in the exit room.
+        :return: Boolean
+        """
         return self.active_room is not None and self.active_room.is_exit() \
                and self._player.mission_complete()
 
     def start_game(self):
+        """
+        Sets up new player, dungeon and runs game loop
+        :return: None
+        """
         self.create_player()
         self.create_dungeon()
         self.play_game()
 
     def end_game(self, win):
+        """
+        Congratulates the player if winning conditions are met and offers to restart the game
+        :param win: True if win conditions met
+        :return: None
+        """
         if win:
             print("You did it!")
             print(self._player)
@@ -206,7 +229,11 @@ class DungeonAdventure:
         print(textwrap.dedent(output))
 
     def is_move_valid(self, direction):
-        """Checks to see if player can move in provided direction"""
+        """
+        Checks to see if player can move in provided direction
+        :param direction: player input corresponding to a direction
+        :return: Boolean
+        """
         if direction == "w":
             return self._active_room.north
         elif direction == "s":
@@ -219,7 +246,11 @@ class DungeonAdventure:
             raise Exception("That's not a valid direction!")
 
     def move(self, direction):
-        """Changes the active room of the game"""
+        """
+        Changes the active room of the game
+        :param direction: player input corresponding to a direction
+        :return: None
+        """
         directions = {"w": (-1, 0), "s": (1, 0), "d": (0, 1), "a": (0, -1)}
         movement = directions.get(direction)
         self._active_room = self._dungeon.get_room(
@@ -228,8 +259,10 @@ class DungeonAdventure:
         )
 
     def check_room_inventory(self):
-        """Checks active room to see if it has items and transfers if
-        present"""
+        """
+        Checks active room to see if it has items and transfers if
+        present
+        """
         # check if there are potions
         potions = ["healing", "vision"]
         for potion in potions:
