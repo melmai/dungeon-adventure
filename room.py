@@ -18,6 +18,51 @@ class Room:
         self.inheritance = False
         self.polymorphism = False
 
+    def has_potion(self, potion_type):
+        """Checks if specified potion is present"""
+        if potion_type == "healing":
+            return self.healing_potion
+        elif potion_type == "vision":
+            return self.vision_potion
+        else:
+            raise ValueError("That's not a potion type.")
+
+    def remove_potion(self, potion_type):
+        """Removes specified potion from room"""
+        if potion_type == "healing":
+            self.healing_potion = False
+        elif potion_type == "vision":
+            self.vision_potion = False
+        else:
+            raise ValueError("That's not a potion type.")
+
+    def has_pillar(self, pillar_type):
+        """Checks if specified pillar is present"""
+        if pillar_type == "abstraction":
+            return self.abstraction
+        elif pillar_type == "inheritance":
+            return self.inheritance
+        elif pillar_type == "encapsulation":
+            return self.encapsulation
+        elif pillar_type == "polymorphism":
+            return self.polymorphism
+        else:
+            raise ValueError("That's not a potion type.")
+
+    def remove_pillar(self, pillar_type):
+        """Removes pillar from room"""
+        if pillar_type == "abstraction":
+            self.abstraction = False
+        elif pillar_type == "inheritance":
+            self.inheritance = False
+        elif pillar_type == "encapsulation":
+            self.encapsulation = False
+        elif pillar_type == "polymorphism":
+            self.polymorphism = False
+        else:
+            raise ValueError("That's not a pillar type.")
+
+
     def __str__(self):
         result = ""
         self.draw_top()
