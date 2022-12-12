@@ -78,7 +78,7 @@ class DungeonAdventure:
                 print("Sorry, that doesn't make sense.")
                 self.print_game_options()
 
-        self.end_game()
+        self.end_game(self.check_win())
 
         
         
@@ -89,8 +89,11 @@ class DungeonAdventure:
     def check_win(self):
         return self._active_room.exit and self._player.mission_complete()
 
-    def end_game(self):
-        pass
+    def end_game(self, win):
+        if win:
+            print("You did it!")
+        else:
+            print("Sorry, no win. Try again?")
 
     def create_player(self):
         """Gets name for player and creates instance of Adventurer"""
