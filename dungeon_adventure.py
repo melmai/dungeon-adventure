@@ -196,6 +196,15 @@ class DungeonAdventure:
         # create/set dungeon and difficulty
         dungeon = Dungeon(size, size)
         dungeon.generate()
+        if difficulty == "1":
+            dungeon.item_spawn_chance = 0.25
+            dungeon.pit_spawn_chance = 0.1
+        elif difficulty == "2":
+            dungeon.item_spawn_chance = 0.2
+            dungeon.pit_spawn_chance = 0.15
+        elif difficulty == "3":
+            dungeon.item_spawn_chance = 0.15
+            dungeon.pit_spawn_chance = 0.2
         dungeon.fill_rooms()
         self._dungeon = dungeon
         self._difficulty = int(difficulty)
