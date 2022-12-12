@@ -30,10 +30,6 @@ class DungeonAdventure:
         """Returns the player's current room"""
         return self._active_room
 
-    @active_room.setter
-    def active_room(self, room):
-        self._active_room = room
-
     def print_intro(self):
         """Prints game instructions for player"""
         intro = """
@@ -68,21 +64,21 @@ class DungeonAdventure:
                 elif command == "v": # use vision potion
                     potion_removed = self._player.use_vision_potion() # true if potion used, false otherwise
                     if potion_removed:
-                        self._dungeon.vision_potion(self._active_room.row, self._active_room.col)
+                        self._dungeon.vision_potion(self.active_room.row, self.active_room.col)
                 elif command == "i": # check status and inventory
                     print(self._player)
-                    print(self._active_room)
+                    print(self.active_room)
                 else: # otherwise player wants to move
 
                     # if there's a door, move rooms
                     if self.is_move_valid(command):
                         self.move(command)
-                        print(self._active_room)
+                        print(self.active_room)
                         self.check_room_inventory()
                     # otherwise let player know
                     else:
                         print("The way is blocked!")
-                        print(self._active_room)
+                        print(self.active_room)
         
             else:
                 print("Sorry, that doesn't make sense.")
@@ -97,7 +93,7 @@ class DungeonAdventure:
 
     
     def check_win(self):
-        return self._active_room is not None and self._active_room.is_exit() and self._player.mission_complete()
+        return self.active_room is not None and self.active_room.is_exit() and self._player.mission_complete()
 
     def start_game(self):
         self.create_player()
@@ -155,7 +151,7 @@ class DungeonAdventure:
 
         # set active room to entrance
         self._active_room = dungeon.get_room(dungeon.entrance_row, dungeon.entrance_col)
-        print(self._active_room)
+        print(self.active_room)
 
 
     def print_game_options(self):
@@ -193,7 +189,7 @@ class DungeonAdventure:
         """Changes the active room of the game"""
         directions = {"n": (-1,0), "s": (1, 0), "e": (0, 1), "w": (0, -1)}
         movement = directions.get(direction)
-        self.active_room = self._dungeon.get_room(
+        self._active_room = self._dungeon.get_room(
             self.active_room.row + movement[0],
             self.active_room.col + movement[1]
         )
@@ -203,7 +199,7 @@ class DungeonAdventure:
         # check if there are potions
         potions = ["healing", "vision"]
         for potion in potions:
-            if self._active_room.has_potion(potion):
+            if self.active_room.has_potion(potion):
                 print(f"You found a {potion} potion!")
                 if potion == "vision":
                     self._player.add_vision_potion()
@@ -212,7 +208,20 @@ class DungeonAdventure:
                     self._player.add_healing_potion(hp)
                     print(f"A healing potion of {hp.strength} strength")
 
-                self._active_room.remove_potion(potion)
+                self.active_room.remove_potion(potion)
+
+        # check if there are pits
+        if self.active_room.has_pit():
+            self._player.take_damage()
+            print("You have fallen into a pit")
+
+        # check if there are pillars
+        pillars = ["inheritance", "abstraction", "encapsulation", "polymorphism"]
+        for pillar in pillars:
+            if self.active_room.has_pillar(pillar):
+                self._player.add_pillar(pillar)
+                self.active_room.remove_pillar(pillar)
+                print(f"\nYou found the {pillar} pillar!")
 
                 # this should only run once
                 if self._player.mission_complete():
@@ -220,21 +229,8 @@ class DungeonAdventure:
                     print("Please make your way to the exit...")
                     print("...but make sure to watch out for those pits!")
 
-        # check if there are pits
-        if self._active_room.has_pit():
-            self._player.take_damage()
-            print("You have fallen into a pit")
-
-        # check if there are pillars
-        pillars = ["inheritance", "abstraction", "encapsulation", "polymorphism"]
-        for pillar in pillars:
-            if self._active_room.has_pillar(pillar):
-                self._player.add_pillar(pillar)
-                self._active_room.remove_pillar(pillar)
-                print(f"\nYou found the {pillar} potion!")
-
         # check if exit and notify player
-        if self._active_room.is_exit() and not self._found_exit:
+        if self.active_room.is_exit() and not self._found_exit:
             print("Congratulations! You've found the exit!")
             print("To exit, you must have all 4 pillars in your posession.")
             self._found_exit = True
