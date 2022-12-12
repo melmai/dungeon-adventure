@@ -72,6 +72,8 @@ class DungeonAdventure:
                     print(self.active_room)
                 elif command == "o": # check action options
                     self.print_game_options()
+                elif command == "m": # view map
+                    self.dungeon.draw()
                 else: # otherwise player wants to move
 
                     # if there's a door, move rooms
@@ -94,7 +96,7 @@ class DungeonAdventure:
         
     def is_valid(self, command):
         return True if command in ["n", "s", "e", "w", "x", "v", "h", "q",
-                                   "i", "o"] else False
+                                   "i", "o", "m"] else False
 
     
     def check_win(self):
