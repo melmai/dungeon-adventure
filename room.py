@@ -18,10 +18,13 @@ class Room:
         self.inheritance = False
         self.polymorphism = False
 
-    @property
-    def exit(self):
+    def is_exit(self):
         """Checks if current room is the exit"""
         return self.exit
+    
+    def has_pit(self):
+        """Checks if room has a pit"""
+        return self.pit
 
     def has_potion(self, potion_type):
         """Checks if specified potion is present"""
