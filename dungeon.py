@@ -10,7 +10,8 @@ class Dungeon:
         self.cols = cols
         self.entrance_row = random.randint(0, self.rows - 1)
         self.entrance_col = random.randint(0, self.cols - 1)
-        self.item_spawn_chance = 0.1
+        self.item_spawn_chance = 0
+        self.pit_spawn_chance = 0
         self.rooms = []
         for i in range(rows):
             self.rooms.append([])
@@ -105,9 +106,9 @@ class Dungeon:
         self.get_room(pillar_rows_cols[1][0], pillar_rows_cols[1][1]).encapsulation = True
         self.get_room(pillar_rows_cols[2][0], pillar_rows_cols[2][1]).inheritance = True
         self.get_room(pillar_rows_cols[3][0], pillar_rows_cols[3][1]).polymorphism = True
-        item_chance = [1 - self.item_spawn_chance, self.item_spawn_chance]
-        items = ["Healing", "Vision", "Pit"]
-        item_hit = ["No Item", "Item"]
+        item_chance = [1 - (self.item_spawn_chance + self.pit_spawn_chance), self.item_spawn_chance, self.pit_spawn_chance]
+        items = ["Healing", "Vision"]
+        item_hit = ["No Item", "Item", "Pit"]
         for item in items:
             for choice in choices:
                 item_success = random.choices(item_hit, item_chance)
@@ -116,8 +117,8 @@ class Dungeon:
                         self.get_room(choice[0], choice[1]).healing_potion = True
                     elif item == "Vision":
                         self.get_room(choice[0], choice[1]).vision_potion = True
-                    elif item == "Pit":
-                        self.get_room(choice[0], choice[1]).pit = Pit()
+                elif item_success == ["Pit"]:
+                    self.get_room(choice[0], choice[1]).pit = True
 
     def vision_potion(self, player_row, player_col):
         """When player uses a vision potion this method will display the player room and all surrounding rooms."""
