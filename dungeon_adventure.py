@@ -1,5 +1,6 @@
 from adventurer import Adventurer
 from dungeon import Dungeon
+from potion import HealingPotion
 
 
 class DungeonAdventure:
@@ -9,6 +10,8 @@ class DungeonAdventure:
         self._difficulty = 0
         self._active_room = None
         self._game_over = False
+        self._can_exit = False
+        self._found_exit = False
 
     @property
     def player(self):
@@ -48,32 +51,34 @@ class DungeonAdventure:
     def play_game(self):
         """Enters player into game loop"""
         while not self._game_over:
-            command = input("Enter a direction or use item:\n")
+            command = input("\nEnter a direction or use item:\n")
+            print()
 
+            # if input is valid command
             if self.is_valid(command):
-                if command == "q":
+                if command == "q": # quit
                     self._game_over = True
-                elif command == "x":
+                elif command == "x": # exit
                     if self.check_win():
                         self._game_over = True
-                elif command == "h":
+                elif command == "h": # use healing potion
                     self._player.use_healing_potion()
-                elif command == "v":
-                    potion_removed = self._player.use_vision_potion()
+                elif command == "v": # use vision potion
+                    potion_removed = self._player.use_vision_potion() # true if potion used, false otherwise
                     if potion_removed:
                         self._dungeon.vision_potion(self._active_room.row, self._active_room.col)
-                else:
+                else: # otherwise player wants to move
+
+                    # if there's a door, move rooms
                     if self.is_move_valid(command):
                         self.move(command)
                         print(self._active_room)
                         self.check_room_inventory()
+                    # otherwise let player know
                     else:
                         print("The way is blocked!")
-            
-            if self._player.mission_complete():
-                print("Congratulations, all pillars have been found!")
-                print("Please make your way to the exit...")
-                print("...but make sure to watch out for those pits!")
+                        print(self._active_room)
+        
             else:
                 print("Sorry, that doesn't make sense.")
                 self.print_game_options()
@@ -87,13 +92,22 @@ class DungeonAdventure:
 
     
     def check_win(self):
-        return self._active_room.exit and self._player.mission_complete()
+        return self._active_room.is_exit() and self._player.mission_complete()
 
     def end_game(self, win):
         if win:
             print("You did it!")
+            self._dungeon.draw()
         else:
-            print("Sorry, no win. Try again?")
+            try_again = input("Try again? (y/n)\n")
+            if try_again == "y":
+                self.create_dungeon()
+                self.play_game()
+            elif try_again == "n":
+                print("OK, come back and try again!")
+            else:
+                try_again = input("Sorry, I didn't catch that...\n")
+                self.end_game(False)
 
     def create_player(self):
         """Gets name for player and creates instance of Adventurer"""
@@ -157,7 +171,7 @@ class DungeonAdventure:
 
     def move(self, direction):
         """Changes the active room of the game"""
-        directions = {"n": (0, -1), "s": (0, 1), "e": (1, 0), "w": (-1, 0)}
+        directions = {"n": (-1,0), "s": (1, 0), "e": (0, 1), "w": (0, -1)}
         movement = directions.get(direction)
         self.active_room = self._dungeon.get_room(
             self.active_room.row + movement[0],
@@ -170,9 +184,21 @@ class DungeonAdventure:
         potions = ["healing", "vision"]
         for potion in potions:
             if self._active_room.has_potion(potion):
-                self._player.add_healing_potion()
-                self._active_room.remove_potion(potion)
                 print(f"You found a {potion} potion!")
+                if potion == "vision":
+                    self._player.add_vision_potion()
+                else:
+                    hp = HealingPotion()
+                    self._player.add_healing_potion(hp)
+                    print(f"A healing potion of {hp.strength} strength")
+
+                self._active_room.remove_potion(potion)
+
+                # this should only run once
+                if self._player.mission_complete():
+                    print("Congratulations, all pillars have been found!")
+                    print("Please make your way to the exit...")
+                    print("...but make sure to watch out for those pits!")
 
         # check if there are pits
         if self._active_room.has_pit():
@@ -186,6 +212,12 @@ class DungeonAdventure:
                 self._player.add_pillar(pillar)
                 self._active_room.remove_pillar(pillar)
                 print(f"You found a {pillar} potion!")
+
+        # check if exit and notify player
+        if self._active_room.is_exit() and not self._found_exit:
+            print("Congratulations! You've found the exit!")
+            print("To exit, you must have all 4 pillars in your posession.")
+            self._found_exit = True
 
 
 if __name__ == '__main__':
