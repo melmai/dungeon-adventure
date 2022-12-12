@@ -53,63 +53,64 @@ class DungeonAdventure:
         """Enters player into game loop"""
         while not self._game_over:
             command = input("What do you want to do? (o) see actions / (q) "
-                            "quit:\n")
-            print()
+                            "quit:\n\n")
 
-            # if input is valid command
+            # run command if input is valid
             if self.is_valid(command):
-                if command == "q":  # quit
-                    self._game_over = True
-                elif command == "x":  # exit
-                    if self.check_win():
-                        self._game_over = True
-                    elif self.player.mission_complete():
-                        print("This isn't the exit...")
-                    else:
-                        print("I'm afraid you're missing some pillars, "
-                              "friend. Check your inventory.")
-                elif command == "h":  # use healing potion
-                    self._player.use_healing_potion()
-                elif command == "v":  # use vision potion
-                    potion_removed = self._player.use_vision_potion()  #
-                    # true if potion used, false otherwise
-                    if potion_removed:
-                        self._dungeon.vision_potion(self.active_room.row,
-                                                    self.active_room.col)
-                elif command == "i":  # check status and inventory
-                    print(self._player)
-                    print(self.active_room)
-                elif command == "o":  # check action options
-                    self.print_game_options()
-                elif command == "m":  # view map
-                    self.dungeon.draw()
-                    print("\nHey now, no peeking!")
-                elif command == "r":
-                    print(self.active_room)
-                    print()
-                else:  # otherwise player wants to move
-
-                    # if there's a door, move rooms
-                    if self.is_move_valid(command):
-                        self.move(command)
-                        print(self.active_room)
-                        print()
-                        self.check_room_inventory()
-                    # otherwise let player know
-                    else:
-                        print(self.active_room)
-                        print("\nThe way is blocked!")
-
+                self.execute_command(command)
             else:
                 print("Sorry, that doesn't make sense.")
                 self.print_game_options()
 
         self.end_game(self.check_win())
 
+    def execute_command(self, command):
+        if command == "q":  # quit
+            self._game_over = True
+        elif command == "x":  # exit
+            if self.check_win():
+                self._game_over = True
+            elif self.player.mission_complete():
+                print("This isn't the exit...")
+            else:
+                print("I'm afraid you're missing some pillars, "
+                      "friend. Check your inventory.")
+        elif command == "h":  # use healing potion
+            self._player.use_healing_potion()
+        elif command == "v":  # use vision potion
+            potion_removed = self._player.use_vision_potion()  #
+            # true if potion used, false otherwise
+            if potion_removed:
+                self._dungeon.vision_potion(self.active_room.row,
+                                            self.active_room.col)
+        elif command == "i":  # check status and inventory
+            print(self._player)
+            print(self.active_room)
+        elif command == "o":  # check action options
+            self.print_game_options()
+        elif command == "m":  # view map
+            self.dungeon.draw()
+            print("\nHey now, no peeking!")
+        elif command == "r":
+            print(self.active_room)
+            print()
+        else:  # otherwise player wants to move
+
+            # if there's a door, move rooms
+            if self.is_move_valid(command):
+                self.move(command)
+                print(self.active_room)
+                print()
+                self.check_room_inventory()
+            # otherwise let player know
+            else:
+                print(self.active_room)
+                print("\nThe way is blocked!")
+
     @staticmethod
     def is_valid(command):
-        return True if command in ["w", "a", "s", "d", "x", "v", "h", "q",
-                                   "i", "o", "m", "r"] else False
+        return command in ["w", "a", "s", "d", "x", "v", "h", "q", "i", "o",
+                           "m", "r"]
 
     def check_win(self):
         return self.active_room is not None and self.active_room.is_exit() \
