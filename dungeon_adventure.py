@@ -8,6 +8,7 @@ class DungeonAdventure:
         self._dungeon = None
         self._difficulty = 0
         self._active_room = None
+        self._game_over = False
 
     @property
     def player(self):
@@ -46,20 +47,50 @@ class DungeonAdventure:
 
     def play_game(self):
         """Enters player into game loop"""
-        command = input("Enter a direction or use item:\n")
-        if self.is_move_valid(command):
-            self.move(command)
-            print(self._active_room)
-        else:
-            print("The way is blocked!")
+        while not self._game_over:
+            command = input("Enter a direction or use item:\n")
 
-        if self._player.mission_complete():
-            print("Congratulations, all pillars have been found!")
-            print("Please make your way to the exit...")
-            print("...but make sure to watch out for those pits!")
+            if self.is_valid(command):
+                if command == "q":
+                    self._game_over = True
+                elif command == "x":
+                    if self.check_win():
+                        self._game_over = True
+                elif command == "h":
+                    self._player.use_healing_potion()
+                elif command == "v":
+                    potion_removed = self._player.use_vision_potion()
+                    if potion_removed:
+                        self._dungeon.vision_potion(self._active_room.row, self._active_room.col)
+                else:
+                    if self.is_move_valid(command):
+                        self.move(command)
+                        print(self._active_room)
+                        self.check_room_inventory()
+                    else:
+                        print("The way is blocked!")
+            
+            if self._player.mission_complete():
+                print("Congratulations, all pillars have been found!")
+                print("Please make your way to the exit...")
+                print("...but make sure to watch out for those pits!")
+            else:
+                print("Sorry, that doesn't make sense.")
+                self.print_game_options()
+
+        self.end_game()
+
+        
+        
+    def is_valid(self, command):
+        return True if command in ["n", "s", "e", "w", "x", "v", "h", "q"] else False
+
     
     def check_win(self):
-        if self._player.mission_complete():
+        return self._active_room.exit and self._player.mission_complete()
+
+    def end_game(self):
+        pass
 
     def create_player(self):
         """Gets name for player and creates instance of Adventurer"""
