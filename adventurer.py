@@ -47,6 +47,7 @@ class Adventurer:
 
     @property
     def max_health(self):
+        """This method returns the value of the max health possible."""
         return self._health_max
 
     @property
@@ -158,10 +159,10 @@ class Adventurer:
     def mission_complete(self):
         """This method checks to see if all pillars are found and returns a
         boolean."""
-        return self._pillars["abstraction"] and self._pillars[
-            "encapsulation"] \
-               and self._pillars["inheritance"] and self._pillars[
-                   "polymorphism"]
+        return self._pillars["abstraction"] \
+            and self._pillars["encapsulation"] \
+            and self._pillars["inheritance"] \
+            and self._pillars["polymorphism"]
 
     def __str__(self):
         """This method returns a string representation of the Adventurer."""
