@@ -109,15 +109,19 @@ class DungeonAdventure:
 
     def check_win(self):
         """
-        Checks to see if the player has all pillars while in the exit room.
+        Checks to see if the player has all pillars while in the exit room
+        and triggers game end if True
         :return: Boolean
         """
+        # check win conditions
         has_won = self.active_room is not None \
             and self.active_room.is_exit() \
             and self.player.mission_complete()
 
+        # if won, end the game
         if has_won:
             self._game_over = True
+        # otherwise tell the player what they're missing
         elif not self._active_room.is_exit:
             print("This isn't the exit...")
         else:  # need more pillars
