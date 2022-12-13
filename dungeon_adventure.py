@@ -111,6 +111,7 @@ class DungeonAdventure:
         """
         Checks to see if the player has all pillars while in the exit room
         and triggers game end if True
+        :param: is_quitting: True if user requested to end game
         :return: Boolean
         """
         # check win conditions
