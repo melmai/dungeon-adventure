@@ -81,6 +81,8 @@ class Adventurer:
         # use the damage amount if provided
         if damage is not None:
             self._health -= damage
+            if self._health < 0:
+                self._health = 0
             self.print_health_status()
         # otherwise, generate damage amount between 1-20
         else:

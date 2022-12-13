@@ -307,6 +307,9 @@ class DungeonAdventure:
             damage = self.active_room.pit.damage
             print(f"You have fallen into a pit and take {damage} damage.")
             self.player.take_damage(damage)
+            if self.player.health == 0:
+                self._game_over = True
+                print("Sorry about your death.")
 
         # check if there are pillars
         pillars = ["inheritance", "abstraction", "encapsulation",
