@@ -9,7 +9,9 @@ class HealingPotion:
 
     @property
     def strength(self):
+        """Returns the amount of healing strength of the Potion instance."""
         return self._strength
 
     def __str__(self):
+        """Returns a string representation of the strength of the Potion."""
         return f"+{self.strength}HP"

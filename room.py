@@ -1,5 +1,3 @@
-import random
-
 class Room:
     def __init__(self, row, col):
         self.row = row
@@ -69,7 +67,6 @@ class Room:
             self.polymorphism = False
         else:
             raise ValueError("That's not a pillar type.")
-
 
     def __str__(self):
         result = ""
@@ -145,4 +142,3 @@ class Room:
 
     def __repr__(self):
         return str(self)
-

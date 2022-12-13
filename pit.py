@@ -6,4 +6,5 @@ class Pit:
 
     @property
     def damage(self):
+        """Returns the damage to inflict on the player."""
         return self._damage

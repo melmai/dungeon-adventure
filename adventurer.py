@@ -47,6 +47,7 @@ class Adventurer:
 
     @property
     def max_health(self):
+        """This method returns the value of the max health possible."""
         return self._health_max
 
     @property
