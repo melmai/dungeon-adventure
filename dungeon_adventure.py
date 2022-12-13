@@ -72,7 +72,7 @@ class DungeonAdventure:
         if command == "q":  # quit
             self._game_over = True
         elif command == "x":  # exit
-            self.check_win()
+            self.check_win(False)
         elif command == "h":  # use healing potion
             self.player.use_healing_potion()
         elif command == "v":  # use vision potion
@@ -107,7 +107,7 @@ class DungeonAdventure:
         return command in ["w", "a", "s", "d", "x", "v", "h", "q", "i", "o",
                            "m", "r"]
 
-    def check_win(self):
+    def check_win(self, is_quitting=True):
         """
         Checks to see if the player has all pillars while in the exit room
         and triggers game end if True
@@ -118,15 +118,16 @@ class DungeonAdventure:
             and self.active_room.is_exit() \
             and self.player.mission_complete()
 
-        # if won, end the game
-        if has_won:
-            self._game_over = True
-        # otherwise tell the player what they're missing
-        elif not self._active_room.is_exit:
-            print("This isn't the exit...")
-        else:  # need more pillars
-            print("I'm afraid you're missing some pillars, "
-                  "friend. Check your inventory.")
+        if not is_quitting:
+            # if won, end the game
+            if has_won:
+                self._game_over = True
+            # otherwise tell the player what they're missing
+            elif not self.active_room.is_exit():
+                print("This isn't the exit...")
+            else:  # need more pillars
+                print("I'm afraid you're missing some pillars, "
+                      "friend. Check your inventory.")
 
         return has_won
 
@@ -146,23 +147,24 @@ class DungeonAdventure:
         :param win: True if win conditions met
         :return: None
         """
+        # tell the player they've won if applicable
         if win:
             print("You did it!")
             print(self.player)
             print()
             self._dungeon.draw()
-        else:
-            try_again = input("Try again? (y/n)\n")
-            if try_again == "y":
-                print("OK let's try it again! Creating a new dungeon...\n")
-                self._game_over = False
-                self.start_game()
 
-            elif try_again == "n":
-                print("OK, come back and try again!")
-            else:
-                print("Sorry, I didn't catch that...\n")
-                self.end_game(False)
+        # always ask to restart
+        try_again = input("Care to try again? (y/n)\n")
+        if try_again == "y":
+            print("OK let's try it again! Creating a new dungeon...\n")
+            self._game_over = False
+            self.start_game()
+        elif try_again == "n":
+            print("OK, come back and try again!")
+        else:
+            print("Sorry, I didn't catch that...\n")
+            self.end_game(False)
 
     def create_player(self):
         """Gets name for player and creates instance of Adventurer"""
